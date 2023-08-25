@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const authModel = require("./auth-model");
+const jwt = require("jsonwebtoken");
 const { userNameCheck } = require("./auth-middleware");
+const { JWT_SECRET } = require("../../data/dbConfig");
 
 router.post("/register", userNameCheck, async (req, res, next) => {
   // res.end("implement register, please!");
@@ -77,5 +79,16 @@ router.post("/login", (req, res) => {
       the response body should include a string exactly as follows: "invalid credentials".
   */
 });
+
+function buildToken(user) {
+  const payload = {
+    subject: user.id,
+    username: user.username,
+  };
+  const options = {
+    expiresIn: "1d",
+  };
+  return jwt.sign(payload, JWT_SECRET, options);
+}
 
 module.exports = router;
