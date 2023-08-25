@@ -4,9 +4,11 @@ const authModel = require("./auth-model");
 
 router.post("/register", async (req, res, next) => {
   // res.end("implement register, please!");
-
   try {
     const { username, password } = req.body;
+    if (!username || !password) {
+      res.status(404).json({ message: "username and password required" });
+    }
     const hash = bcrypt.hashSync(password, 8);
     const newUser = { username, password: hash };
     const result = await authModel.add(newUser);
