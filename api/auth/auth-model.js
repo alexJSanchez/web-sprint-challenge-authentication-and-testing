@@ -4,6 +4,7 @@ module.exports = {
   find,
   findByName,
   findById,
+  findBy,
 };
 
 function find() {
@@ -12,6 +13,10 @@ function find() {
 
 function findByName(username) {
   return db("users").where("username", username);
+}
+
+function findBy(username) {
+  return db("users").where("username", username).first();
 }
 
 async function add(user) {

@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const authModel = require("./auth-model");
 const jwt = require("jsonwebtoken");
 const { userNameCheck, checkBody } = require("./auth-middleware");
-const { JWT_SECRET } = require("../../data/dbConfig");
+const { JWT_SECRET } = require("../../data/index");
 
 router.post("/register", checkBody, userNameCheck, async (req, res, next) => {
   // res.end("implement register, please!");
@@ -50,8 +50,20 @@ router.post("/register", checkBody, userNameCheck, async (req, res, next) => {
   */
 });
 
-router.post("/login", (req, res) => {
-  res.end("implement login, please!");
+router.post("/login", async (req, res, next) => {
+  const { username, password } = req.body;
+  authModel
+    .findBy(username)
+    .then((user) => {
+      if (user && bcrypt.compareSync(password, user.password)) {
+        const token = buildToken(user);
+        res.status(200).json({ message: `Welcome back ${username}`, token });
+      } else {
+        next({ status: 401, message: "Invalid credentials" });
+      }
+    })
+    .catch(next);
+
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
