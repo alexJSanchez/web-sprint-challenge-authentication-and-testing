@@ -6,9 +6,16 @@ router.post("/register", async (req, res, next) => {
   // res.end("implement register, please!");
   try {
     const { username, password } = req.body;
+    //check username and password middleware
     if (!username || !password) {
       res.status(404).json({ message: "username and password required" });
     }
+
+    const findName = await authModel.findByName({ username });
+    if (findName) {
+      res.json({ message: `${username} is already taken` });
+    }
+
     const hash = bcrypt.hashSync(password, 8);
     const newUser = { username, password: hash };
     const result = await authModel.add(newUser);
