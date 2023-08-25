@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const authModel = require("./auth-model");
 const jwt = require("jsonwebtoken");
 const { userNameCheck, checkBody } = require("./auth-middleware");
-const restricted = require("../middleware/restricted");
+const restrict = require("../middleware/restricted");
 const { JWT_SECRET } = require("../../data/index");
 
 router.post("/register", checkBody, userNameCheck, async (req, res, next) => {
@@ -51,7 +51,7 @@ router.post("/register", checkBody, userNameCheck, async (req, res, next) => {
   */
 });
 
-router.post("/login", restricted, async (req, res, next) => {
+router.post("/login", restrict, async (req, res, next) => {
   const { username, password } = req.body;
   authModel
     .findBy(username)
