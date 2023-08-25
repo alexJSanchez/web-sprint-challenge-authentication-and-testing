@@ -2,17 +2,14 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const authModel = require("./auth-model");
 const jwt = require("jsonwebtoken");
-const { userNameCheck } = require("./auth-middleware");
+const { userNameCheck, checkBody } = require("./auth-middleware");
 const { JWT_SECRET } = require("../../data/dbConfig");
 
-router.post("/register", userNameCheck, async (req, res, next) => {
+router.post("/register", checkBody, userNameCheck, async (req, res, next) => {
   // res.end("implement register, please!");
   try {
     const { username, password } = req.body;
     //check username and password middleware
-    if (!username || !password) {
-      res.status(404).json({ message: "username and password required" });
-    }
 
     const hash = bcrypt.hashSync(password, 8);
     const newUser = { username, password: hash };
