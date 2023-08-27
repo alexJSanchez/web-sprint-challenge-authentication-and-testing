@@ -3,19 +3,32 @@ const { JWT_SECRET } = require("../../data/index");
 
 const restrict = (req, res, next) => {
   const token = req.headers.authorization;
-  if (token) {
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-      if (err) {
-        next({ status: 401, message: "invalid token" });
-      } else {
-        req.decodedJwt = decoded;
-        console.log(req.decodedJwt);
-        next();
-      }
-    });
-  } else {
-    next({ status: 401, message: "token required" });
+  console.log("token:", token);
+  console.log(JWT_SECRET);
+
+  if (!token) {
+    res.json({ status: 401, message: "token required" });
   }
+
+  if (token === JWT_SECRET) {
+    next();
+  } else {
+    next({ status: 401, message: "invalid token" });
+  }
+
+  // if (token) {
+  //   jwt.verify(token, "secret", (err, decoded) => {
+  //     if (err) {
+  //       console.log(decoded);
+  //       console.log(err);
+  //       next({ status: 401, message: "invalid token" });
+  //     } else {
+  //       next();
+  //     }
+  //   });
+  // } else {
+  //   next({ status: 401, message: "token required" });
+  // }
   /*
     IMPLEMENT
 
