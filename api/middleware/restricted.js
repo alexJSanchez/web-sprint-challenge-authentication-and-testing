@@ -3,28 +3,32 @@ const { SECRET } = require("../../data/index");
 
 const restrict = (req, res, next) => {
   const token = req.headers.authorization;
-  console.log(token);
+  console.log("token: ", token);
+  console.log("secret:", SECRET);
   if (!token) {
     res.json({ status: 401, message: "token required" });
-  }
-  if (token === SECRET) {
-    next();
+  } else if (token) {
+    jwt.verify(token, SECRET, (err, decoded) => {
+      if (err) {
+        next(err);
+      } else {
+        next();
+      }
+    });
   } else {
     next({ status: 401, message: "token invalid" });
   }
 
   // if (token) {
-  //   jwt.verify(token, "secret", (err, decoded) => {
+  //   jwt.verify(token, SECRET, (err, decoded) => {
   //     if (err) {
-  //       console.log(decoded);
-  //       console.log(err);
-  //       next({ status: 401, message: "invalid token" });
+  //       next(err);
   //     } else {
   //       next();
   //     }
   //   });
   // } else {
-  //   next({ status: 401, message: "token required" });
+  //   next({ status: 401, message: "token invalid" });
   // }
   /*
     IMPLEMENT
