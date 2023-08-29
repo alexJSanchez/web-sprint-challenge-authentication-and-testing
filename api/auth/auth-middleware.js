@@ -7,7 +7,7 @@ const userNameCheck = async (req, res, next) => {
   if (nameList.length === 0) {
     next();
   } else {
-    res.json({ message: "username already exists" });
+    res.json({ message: "username taken" });
   }
 };
 

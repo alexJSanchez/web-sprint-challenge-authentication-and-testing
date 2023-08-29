@@ -3,8 +3,7 @@ const bcrypt = require("bcryptjs");
 const authModel = require("./auth-model");
 const jwt = require("jsonwebtoken");
 const { userNameCheck, checkBody } = require("./auth-middleware");
-const restrict = require("../middleware/restricted");
-const { JWT_SECRET } = require("../../data/index");
+const { SECRET } = require("../../data/index");
 
 // function buildToken(user) {
 //   return jwt.sign(
@@ -78,7 +77,7 @@ router.post("/login", checkBody, (req, res, next) => {
         res
           .status(200)
           .json({ message: `welcome, ${username.username}`, token: token });
-      } else {
+      } else if (!bcrypt.compareSync(password, username.password)) {
         res.status(401).json({ message: "Invalid credentials" });
       }
     })
@@ -116,7 +115,7 @@ function buildToken(user) {
   const options = {
     expiresIn: "1d",
   };
-  return jwt.sign(payload, JWT_SECRET, options);
+  return jwt.sign(payload, SECRET, options);
 }
 
 module.exports = router;

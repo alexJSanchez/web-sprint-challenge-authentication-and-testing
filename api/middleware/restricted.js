@@ -1,15 +1,13 @@
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../../data/index");
+const { SECRET } = require("../../data/index");
 
 const restrict = (req, res, next) => {
   const token = req.headers.authorization;
-  console.log("token:", token);
-  console.log(JWT_SECRET);
-
+  console.log(token);
   if (!token) {
     res.json({ status: 401, message: "token required" });
   }
-  if (token === JWT_SECRET) {
+  if (token === SECRET) {
     next();
   } else {
     next({ status: 401, message: "invalid token" });
