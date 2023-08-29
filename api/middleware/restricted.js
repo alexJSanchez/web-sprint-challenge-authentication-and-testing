@@ -10,7 +10,7 @@ const restrict = (req, res, next) => {
   if (token === SECRET) {
     next();
   } else {
-    next({ status: 401, message: "invalid token" });
+    next({ status: 401, message: "token invalid" });
   }
 
   // if (token) {
