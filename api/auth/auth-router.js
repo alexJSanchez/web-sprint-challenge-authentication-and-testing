@@ -64,20 +64,20 @@ router.post("/register", checkBody, userNameCheck, async (req, res, next) => {
   */
 });
 
-router.post("/login", (req, res, next) => {
+router.post("/login", checkBody, (req, res, next) => {
   const { username, password } = req.body;
 
   authModel
     .findBy(username)
     .then((username) => {
       if (!username) {
-        res.status(401).json({ message: "user does not exists" });
+        res.status(401).json({ message: "invalid credentials" });
       } else if (bcrypt.compareSync(password, username.password)) {
         const token = buildToken(username);
         console.log("second:", username, token);
         res
           .status(200)
-          .json({ message: `Welcome, ${username.username}`, token });
+          .json({ message: `welcome, ${username.username}`, token: token });
       } else {
         res.status(401).json({ message: "Invalid credentials" });
       }
