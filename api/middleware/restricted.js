@@ -9,7 +9,6 @@ const restrict = (req, res, next) => {
   if (!token) {
     res.json({ status: 401, message: "token required" });
   }
-
   if (token === JWT_SECRET) {
     next();
   } else {

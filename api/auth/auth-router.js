@@ -6,17 +6,6 @@ const { userNameCheck, checkBody } = require("./auth-middleware");
 const restrict = require("../middleware/restricted");
 const { JWT_SECRET } = require("../../data/index");
 
-function buildToken(user) {
-  const payload = {
-    subject: user.id,
-    username: user.username,
-  };
-  const options = {
-    expiresIn: "1d",
-  };
-  return jwt.sign(payload, JWT_SECRET, options);
-}
-
 // function buildToken(user) {
 //   return jwt.sign(
 //     {
@@ -75,17 +64,15 @@ router.post("/register", checkBody, userNameCheck, async (req, res, next) => {
   */
 });
 
-router.post("/login", restrict, (req, res, next) => {
+router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
   authModel
     .findBy(username)
     .then((username) => {
-      console.log("first:", username.password);
-      // })
-      // .then((user) => {
-      console.log("user:", username);
-      if (bcrypt.compareSync(password, username.password)) {
+      if (!username) {
+        res.status(401).json({ message: "user does not exists" });
+      } else if (bcrypt.compareSync(password, username.password)) {
         const token = buildToken(username);
         console.log("second:", username, token);
         res
@@ -121,5 +108,15 @@ router.post("/login", restrict, (req, res, next) => {
       the response body should include a string exactly as follows: "invalid credentials".
   */
 });
+function buildToken(user) {
+  const payload = {
+    subject: user.id,
+    username: user.username,
+  };
+  const options = {
+    expiresIn: "1d",
+  };
+  return jwt.sign(payload, JWT_SECRET, options);
+}
 
 module.exports = router;
