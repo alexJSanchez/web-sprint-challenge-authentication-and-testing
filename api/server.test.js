@@ -26,8 +26,8 @@ describe("[GET] server", () => {
   });
   test("status must be 404", async () => {
     const expectedStatus = 404;
-    const response = await request(server).post("/");
-    expect(response.status).not.toEqual(expectedStatus);
+    const response = await request(server).get("/");
+    expect(response.body).toEqual({ api: "running" });
   });
 });
 
