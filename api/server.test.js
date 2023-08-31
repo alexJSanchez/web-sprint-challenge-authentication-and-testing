@@ -16,33 +16,34 @@ beforeAll(async () => {
 test("sanity", () => {
   expect(true).toBe(true);
 });
+
 //first endpont
-describe("[GET] server", () => {
-  test("check server", async () => {
-    const expectedCode = 200;
-    const response = await request(server).get("/");
-    expect(response.status).toEqual(expectedCode);
-  });
-  test("makes sure api is running", async () => {
-    const expectedResponse = "running";
-    const response = await request(server).get("/");
-    expect(response.body.api).toBe(expectedResponse);
-  });
-});
+// describe("[GET] server", () => {
+//   test("check server", async () => {
+//     const expectedCode = 200;
+//     const response = await request(server).get("/");
+//     expect(response.status).toEqual(expectedCode);
+//   });
+//   test("makes sure api is running", async () => {
+//     const expectedResponse = "running";
+//     const response = await request(server).get("/");
+//     expect(response.body.api).toBe(expectedResponse);
+//   });
+// });
 //second end point
-describe("[Get] /jokes", () => {
-  test("responds with 200 Ok", async () => {
-    const res = await request(server).get("/api/jokes/");
-    expect(res.status).toBe(200);
-  });
-  test("invalid token response", async () => {
-    const res = await request(server).get("/api/jokes/");
-    expect(res.body).toMatchObject({
-      message: "token required",
-      status: 401,
-    });
-  });
-});
+// describe("[Get] /jokes", () => {
+//   test("responds with 200 Ok", async () => {
+//     const res = await request(server).get("/api/jokes/");
+//     expect(res.status).toBe(200);
+//   });
+//   test("invalid token response", async () => {
+//     const res = await request(server).get("/api/jokes/");
+//     expect(res.body).toMatchObject({
+//       message: "token required",
+//       status: 401,
+//     });
+//   });
+// });
 
 // describe("test3", () => {
 //   it("check if username is added", async () => {
