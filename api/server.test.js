@@ -25,9 +25,9 @@ test("check server", async () => {
   expect(response.status).toEqual(expectedStatus);
 });
 test("status must be 404", async () => {
-  const expectedStatus = {};
+  const expectedStatus = 200;
   const response = await request(server).get("/jokes");
-  expect(response.body).toEqual({});
+  expect(response.status).not.toEqual(expectedStatus);
 });
 
 test("check server", async () => {
