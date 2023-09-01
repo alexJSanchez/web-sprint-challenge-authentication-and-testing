@@ -73,7 +73,6 @@ router.post("/login", checkBody, (req, res, next) => {
         res.status(401).json({ message: "invalid credentials" });
       } else if (bcrypt.compareSync(password, username.password)) {
         const token = buildToken(username);
-        console.log("second:", username, token);
         res
           .status(200)
           .json({ message: `welcome, ${username.username}`, token: token });

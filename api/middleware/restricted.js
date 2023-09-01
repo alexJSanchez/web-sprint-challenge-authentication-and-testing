@@ -6,11 +6,11 @@ const restrict = (req, res, next) => {
   console.log("token: ", token);
   console.log("secret:", SECRET);
   if (!token) {
-    res.json({ status: 401, message: "token required" });
+    res.json({ status: 404, message: "token required" });
   } else if (token) {
     jwt.verify(token, SECRET, (err, decoded) => {
       if (err) {
-        res.json({ status: 401, message: "token invalid" });
+        res.json({ status: 404, message: "token invalid" });
       } else {
         next();
       }
