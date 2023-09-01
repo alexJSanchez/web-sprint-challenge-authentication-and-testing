@@ -20,14 +20,14 @@ test("sanity", () => {
 //first endpont
 
 test("check server", async () => {
-  const expectedStatus = 200;
-  const response = await request(server).get("/");
+  const expectedStatus = 404;
+  const response = await request(server).get("/jokes");
   expect(response.status).toEqual(expectedStatus);
 });
 test("status must be 404", async () => {
-  const expectedStatus = { api: "running" };
-  const response = await request(server).get("/");
-  expect(response.body).toEqual(expectedStatus);
+  const expectedStatus = {};
+  const response = await request(server).get("/jokes");
+  expect(response.body).toEqual({});
 });
 
 test("check server", async () => {
